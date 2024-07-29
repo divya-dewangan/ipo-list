@@ -1,4 +1,3 @@
-import React from 'react'
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
@@ -11,13 +10,13 @@ function NewBar() {
                     <Navbar.Brand>Page</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="me-auto">
-                            <Link to="/ipo-entry" className='text-dark mx-2'>IpoEntry</Link>
-                            <Link to="/ipo-list" className='text-dark mx-2'>IpoList</Link>
-                            <Link to="/stock-details" className='text-dark mx-2'>StockDetails</Link>
-                            <Link to="/stock-details-list" className='text-dark mx-2'>StockDetailList</Link>
-                            <Link to="/lone-form" className='text-dark mx-2'>LoneForm</Link>
-                            <Link to='/lone-list' className='text-dark mx-2'>LoneList</Link>
+                        <Nav className="me-auto" >
+                            <Nav.Link><Link to="/ipo-entry" className=' mx-2 active  text-decoration-none' >IpoEntry</Link></Nav.Link>
+                            <Nav.Link><Link to="/ipo-list" className=' mx-2 active text-active text-decoration-none'>IpoList</Link></Nav.Link>
+                            <Nav.Link><Link to="/stock-details" className=' mx-2 active text-active text-decoration-none'>StockDetails</Link></Nav.Link>
+                            <Nav.Link><Link to="/stock-details-list" className=' mx-2 active text-active text-decoration-none'>StockDetailList</Link></Nav.Link>
+                            <Nav.Link><Link to="/lone-form" className='mx-2 active text-active text-decoration-none'>LoneForm</Link></Nav.Link>
+                            <Nav.Link><Link to='/lone-list' className='mx-2 active text-active text-decoration-none'>LoneList</Link></Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

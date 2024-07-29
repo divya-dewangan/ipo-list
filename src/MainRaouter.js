@@ -20,9 +20,12 @@ function MainRaouter() {
                             <Route path='/ipo-entry' element={<IpoEntry />} />
                             <Route path='/ipo-list' element={<IpoList />} />
                             <Route path='/stock-details' element={<StockDetails />} />
+                            {/* for edit */}
+                            <Route path='/stock-details/:id' element={<StockDetails />} />
                             <Route path='/stock-details-list' element={<StockDetailList />} />
                             <Route path='/lone-list' element={<LoneList />} />
                             <Route path='/lone-form' element={<LoneForm />} />
+                            <Route path='/lone-form/:id' element={<LoneForm />} />
                         </Routes>
                     } />
                     <Route path='/' element={<Navigate replace to="/ipo-entry" />} />

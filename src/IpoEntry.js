@@ -10,7 +10,7 @@ function IpoEntry() {
     //submit button click karne ke bad "/ipo-list" me phuchane ke liye
     const navigate = useNavigate()
 
-// for toastify 
+    // for toastify 
     const resetHendler = () => {
         toast.info("form is reset")
     }
@@ -22,6 +22,8 @@ function IpoEntry() {
     }, [])
 
     const initialValues = {
+        id: Math.random(),
+        status: 0,
         iponame: "",
         name: "",
         lastdate: "",
@@ -41,17 +43,27 @@ function IpoEntry() {
     }
 
     const onSubmit = (values) => {
+
         //new date ke  use se taime ke acording list show hoga jiska time let wo pahle. 
         values.createdDate = new Date()
         console.log("submited", values)
         const list = JSON.parse(localStorage.getItem('data')) || []
-        list.push(values)
-        localStorage.setItem('data', JSON.stringify(list))
-        //massage & color show in toast.
-        toast.info("form is submited sucessfully")
-        //after submit go to /ipo-list" page8er
-        navigate("/ipo-list")
-        
+
+        const filterValue = list.filter(item => item.iponame == values.iponame && item.name == values.name)
+        console.log("filterValue", filterValue)
+        console.log("length", filterValue.length)
+        if (filterValue.length) {
+            toast.error("The IPO and name already exist.")
+        } else {
+            list.push(values)
+            // list.push(values)
+            localStorage.setItem('data', JSON.stringify(list))
+            //massage & color show in toast.
+            toast.info("form is submited sucessfully")
+            //after submit go to /ipo-list" page8er
+            navigate("/ipo-list")
+        }
+
     }
     const validationSchema = Yup.object({
         iponame: Yup.string().required("Enter iponame"),
@@ -88,9 +100,11 @@ function IpoEntry() {
         formik.setFieldValue('lastdate', dataIs.lastDate)
         formik.setFieldValue('price', dataIs.price)
         formik.setFieldValue('iposize', dataIs.iopSize)
+        formik.setFieldValue('type', dataIs.type)
 
     }
-    
+
+
     const qtyOneHandler = (e) => {
         console.log("qtyOneHandler", e.target.value)
         //when we enter 1 in qty1 inpput then quantity is atomatic fill
@@ -144,7 +158,7 @@ function IpoEntry() {
         },
         {
             key: "Bhumi",
-            value: "Bhumi"  
+            value: "Bhumi"
         },
         {
             key: "Yashu",
@@ -157,8 +171,22 @@ function IpoEntry() {
     ]
     //this is name handler for set the name we selectd
     const userNameHandler = (e) => {
-        formik.setFieldValue('name',e.target.value)
+        formik.setFieldValue('name', e.target.value)
     }
+
+    //check hone pr qty 1 set ho 
+    const handelCkeckbox = (e) => {
+        console.log("e.target.value", e.target.checked);
+        formik.setFieldValue("cutOffPrice1", e.target.checked)
+        formik.setFieldValue('qty1', 1)
+        let a = e.target.checked//qty1=2
+        let b = formik.values.price//price=15000
+        let c = a * b//2*15000
+        console.log("cut of price", c)
+        formik.setFieldValue('amount1', c)//in amount1 input fill 30000
+        formik.setFieldValue('holdamount', c)
+    }
+
     return (
         <div className='container-fluid'>
             <div className='row d-flex justify-content-center'>
@@ -194,7 +222,13 @@ function IpoEntry() {
                                                                 <option key={index} value={item.key}>{item.value}</option>
                                                             ))}
                                                         </Form.Select>
-                                                        {formik.touched.name && formik.errors.name && <div className='text-danger'>{formik.errors.name}</div>} 
+                                                        {formik.touched.name && formik.errors.name && <div className='text-danger'>{formik.errors.name}</div>}
+                                                    </div>
+
+                                                    <div className='col-md-12 mb-2'>
+                                                        <label className='mb-2 d-flex'>type</label>
+                                                        <input className='form-control text-center' name='type' type='text' disabled  {...formik.getFieldProps("type")} />
+                                                        {formik.touched.type && formik.errors.type && <div className='text-danger'>{formik.errors.type}</div>}
                                                     </div>
                                                 </div>
                                             </div>
@@ -241,9 +275,14 @@ function IpoEntry() {
                                                                 <Form.Check
                                                                     type="checkbox"
                                                                     id="checkbox"
-                                                                    label="Cut off price1"
-                                                                    {...formik.getFieldProps("cutOffPrice1")}
+                                                                    label="Cut off price"
+                                                                    name='cutOffPrice1'
+                                                                    onChange={handelCkeckbox}
+                                                                    checked={formik.values.cutOffPrice1}
+                                                                // value={formik.values.cutOffPrice1}
+                                                                // {...formik.getFieldProps("cutOffPrice1")}
                                                                 />
+
                                                             </div>
                                                         </div>
 
@@ -251,14 +290,14 @@ function IpoEntry() {
 
                                                     <div className='col-md-4 mb-2'>
                                                         <div className='px-2'>
-                                                            <input className=' form-control text-center ' name='input' value={formik.values.qty1} disabled={!formik.values.iponame} onChange={qtyOneHandler} type='text' placeholder='qty1' />
+                                                            <input className=' form-control text-center ' name='input' value={formik.values.qty1} disabled={!formik.values.iponame} onChange={qtyOneHandler} type='text' placeholder='qty' />
                                                             {formik.touched.qty1 && formik.errors.qty1 && <div className='text-danger'>{formik.errors.qty1}</div>}
                                                         </div>
                                                     </div>
 
                                                     <div className='col-md-4'>
                                                         <div className='px-2'>
-                                                            <input className='form-control text-center' name='input' value={formik.values.amount1} disabled type='text' placeholder='Amount1' />
+                                                            <input className='form-control text-center' name='input' value={formik.values.amount1} disabled type='text' placeholder='Amount' />
                                                             {formik.touched.amount1 && formik.errors.amount1 && <div className='text-danger tex-left'>{formik.errors.amount1}</div>}
                                                         </div>
                                                     </div>
@@ -281,13 +320,13 @@ function IpoEntry() {
 
                                                     <div className='col-md-4 mb-2'>
                                                         <div className='px-2'>
-                                                            <input className='form-control text-center' name='input' value={formik.values.qty2} disabled={!formik.values.iponame} onChange={qtyTwoHandler} type='text' placeholder='qty2' />
+                                                            <input className='form-control text-center' name='input' value={formik.values.qty2} disabled={!formik.values.iponame} onChange={qtyTwoHandler} type='text' placeholder='qty' />
                                                         </div>
                                                     </div>
 
                                                     <div className='col-md-4'>
                                                         <div className='px-2'>
-                                                            <input className='form-control text-center' name='input' value={formik.values.amount2} disabled type='text' placeholder='Amount2' />
+                                                            <input className='form-control text-center' name='input' value={formik.values.amount2} disabled type='text' placeholder='Amount' />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -307,21 +346,21 @@ function IpoEntry() {
 
                                                     <div className='col-md-4 mb-2'>
                                                         <div className='px-2'>
-                                                            <input className='form-control  text-center mb-3' name='qty1' value={formik.values.qty3} disabled={!formik.values.iponame} onChange={qtyThreeHandler} type='text' placeholder='qty3' />
+                                                            <input className='form-control  text-center mb-3' name='qty1' value={formik.values.qty3} disabled={!formik.values.iponame} onChange={qtyThreeHandler} type='text' placeholder='qty' />
                                                         </div>
                                                     </div>
 
                                                     <div className='col-md-4'>
                                                         <div className='px-2'>
-                                                            <input className='form-control  text-center mb-3' name='amount3' type='text' disabled value={formik.values.amount3} placeholder='Amount3' />
+                                                            <input className='form-control  text-center mb-3' name='amount3' type='text' disabled value={formik.values.amount3} placeholder='Amount' />
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div className='col-md-12 '>
-                                                <button className='btn btn-secondary mx-2' type='reset' onClick={resetHendler}>Reset</button>
-                                                <button className='btn btn-success  mx-2' type='submit' >Submit</button>
+                                            <div className='col-md-12  mb-4'>
+                                                <button className='btn btn-secondary mx-2 p-2' type='reset' onClick={resetHendler}>Reset</button>
+                                                <button className='btn btn-success  mx-2  p-2' type='submit' >Submit</button>
                                             </div>
 
                                         </div>

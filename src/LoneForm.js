@@ -1,17 +1,39 @@
 import { useFormik } from 'formik'
-import React from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
 
 function LoneForm() {
     const navigate = useNavigate()
+    //for edit
+    const params = useParams()
+
+    useEffect(() => {
+        if (params.id) {
+            // console.log("params.id", params.id);
+            const getIdEdit = JSON.parse(localStorage.getItem("listItem")) || []
+            // console.log("getIdEdit", getIdEdit)
+            //qq.id = locastorag me jo id h vo
+            //params.id = jis  id ko edit karna h vo
+            const editItem = getIdEdit.filter((qq) => qq.id == params.id)
+            // console.log("editItem", editItem)
+            const forEdit = editItem[0]
+            formik.setFieldValue("name", forEdit.name)
+            formik.setFieldValue("amount", forEdit.amount)
+            formik.setFieldValue("date", forEdit.date)
+            formik.setFieldValue("paymentMethod", forEdit.paymentMethod)
+            formik.setFieldValue("dueDate", forEdit.dueDate)
+            formik.setFieldValue("comment", forEdit.comment)
+        }
+    }, [params])
 
     const resetHendler = () => {
         toast.info("form is reset")
     }
     const initialValues = {
+        id: Math.random(),
         name: "",
         amount: "",
         date: "",
@@ -20,12 +42,36 @@ function LoneForm() {
         comment: "",
     }
     const onSubmit = (values) => {
-        console.log("submited")
-        const list = JSON.parse(localStorage.getItem('listItem')) || []
-        list.push(values)
-        localStorage.setItem('listItem', JSON.stringify(list))
-        toast.info("form is submited sucessfully")
-        navigate('/lone-list')
+        console.log("values", values)
+        //for update
+        if (params.id) {
+            const updateValue = JSON.parse(localStorage.getItem("listItem")) || []
+            console.log("updateValue", updateValue)
+            const updateMap = updateValue.map((item) => {
+                if (item.id == params.id) {
+                    item.name = values.name
+                    item.amount = values.amount
+                    item.date = values.date
+                    item.paymentMethod = values.paymentMethod
+                    item.dueDate = values.dueDate
+                    item.comment = values.comment
+                }
+                return item
+            })
+            localStorage.setItem('listItem', JSON.stringify(updateMap))
+            toast.info("form is updated sucessfully")
+            navigate(`/lone-list`)
+            console.log("updateMap", updateMap)
+        } else {
+            // console.log("submited")
+            const list = JSON.parse(localStorage.getItem('listItem')) || []
+            list.push(values)
+            localStorage.setItem('listItem', JSON.stringify(list))
+            toast.info("form is submited sucessfully")
+            navigate(`/lone-list`)
+
+        }
+
 
     }
     const validationSchema = Yup.object({
@@ -77,7 +123,7 @@ function LoneForm() {
                             </div>
                             <div className='col-md-6 '>
                                 <button className='btn btn-secondary mx-2' type='reset' onClick={resetHendler}>Reset</button>
-                                <button className='btn btn-success  mx-2' type='submit' >Submit</button>
+                                <button className='btn btn-success  mx-2' type='submit' >{(params.id) ? "Update" : "Submit"}</button>
                             </div>
                         </form>
                     </div>
