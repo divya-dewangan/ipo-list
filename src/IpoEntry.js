@@ -17,8 +17,9 @@ function IpoEntry() {
 
     const [nameList, setNameList] = useState([])
     useEffect(() => {
-        const getName = JSON.parse(localStorage.getItem('stockList')) || []
-        setNameList(getName)
+        const getName = JSON.parse(localStorage.getItem('stockList')) || [];
+        const sortIPOName = getName.sort((a, b) => a > b ? 1 : -1)
+        setNameList(sortIPOName)
     }, [])
 
     const initialValues = {
