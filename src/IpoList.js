@@ -1,45 +1,63 @@
 import React, { useEffect, useState } from 'react'
-import { Form,  } from 'react-bootstrap'
+import { Form, } from 'react-bootstrap'
 import DataTable from 'react-data-table-component'
 import { toast } from 'react-toastify'
+import Loader from './Loader';
 
 function IpoList() {
 
-    const [list, setList] = useState([])
+    const [list, setList] = useState([]);
+
+    const [allData, setAllData] = useState({})
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
-        const storedList = JSON.parse(localStorage.getItem('data')) || []
-        const sortingData = storedList.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));//new entery ko uper me dikhane ke liye
-        console.log("sorted", sortingData)
-        setList(sortingData)
+        getInitialData();
     }, [])
+
+    const getInitialData = () => {
+        setLoading(true)
+        fetch("https://ipo-list-1112-default-rtdb.firebaseio.com/ipo-list.json")
+            .then((data) => data.json())
+            .then((res) => {
+                setAllData(res)
+                const checkNullArray = res?.data?.filter(item => item !== null);
+                const sortingData = checkNullArray?.sort((a, b) => new Date(b?.createdDate) - new Date(a?.createdDate));//new entery ko uper me dikhane ke liye
+                setList(sortingData)
+                setLoading(false)
+            })
+            .catch((error) => {
+                toast.error(error)
+                setLoading(false)
+            })
+    }
 
     //two value (allocated & nonAllocated) assign in one handler
     const handelAllocated = (id, statusValue) => {
-        console.log("id", id)
-        console.log("one", statusValue)
-        const update = list.map((item) => {
-            if (item.id === id) {
-                item.status = statusValue
-            }
-            return item
+        setLoading(true)
+        const updatValue = allData?.data || []
+        const indexIs = updatValue?.findIndex(item => item?.id == id);
+        let values = allData?.data[indexIs];
+        values.status = statusValue
+        fetch(`https://ipo-list-1112-default-rtdb.firebaseio.com/ipo-list/data/${indexIs}.json`, {
+            method: 'PATCH', // HTTP method
+            headers: {
+                'Content-Type': 'application/json', // Specify content type as JSON
+            },
+            body: JSON.stringify(values)
         })
-        localStorage.setItem("data", JSON.stringify(update))
-        setList(update)
-        toast.success("Status has been updated")
+            .then((data) => data.json())
+            .then(() => {
+                getInitialData();
+                setLoading(false)
+                toast.success("Status has been Updated")
+            })
+            .catch((error) => {
+                toast.error(error)
+                setLoading(false)
+            })
 
     }
-
-    // const handelNonAllocated = (id) => {
-    //     const update = list.map((item) => {
-    //         if (item.id === id) {
-    //             item.status = 2
-    //         }
-    //         return item
-    //     })
-    //     localStorage.setItem("data", JSON.stringify(update))
-    //     setList(update)
-
-    // }
     const columns = [
         {
             name: 'IPO Name',
@@ -162,8 +180,10 @@ function IpoList() {
     ];
 
     return (
-        <div className='container'>
-            {/* <div>
+        <>
+            <Loader show={loading} />
+            <div className='container'>
+                {/* <div>
                 <h1 className='text-center my-4 bg-warning'>IPO List</h1>
                 <Table bordered >
                     <thead>
@@ -253,13 +273,14 @@ function IpoList() {
                 </Table>
             </div> */}
 
-            <DataTable
-                title={<h1 className='m-3 text-primary'>IOP List</h1>}
-                columns={columns}
-                data={list}
-                pagination
-            />
-        </div>
+                <DataTable
+                    title={<h1 className='m-3 text-primary'>IOP List</h1>}
+                    columns={columns}
+                    data={list}
+                    pagination
+                />
+            </div>
+        </>
     )
 }
 

@@ -7,6 +7,7 @@ import StockDetails from './StockDetails';
 import StockDetailList from './StockDetailList';
 import LoneList from './LoneList';
 import LoneForm from './LoneForm';
+import Dashboard from './Dashboard';
 
 function MainRaouter() {
 
@@ -17,6 +18,7 @@ function MainRaouter() {
                 <Routes>
                     <Route path='/*' element={
                         <Routes>
+                            <Route path='/dashboard' element={<Dashboard />} />
                             <Route path='/ipo-entry' element={<IpoEntry />} />
                             <Route path='/ipo-list' element={<IpoList />} />
                             <Route path='/stock-details' element={<StockDetails />} />
@@ -28,7 +30,7 @@ function MainRaouter() {
                             <Route path='/lone-form/:id' element={<LoneForm />} />
                         </Routes>
                     } />
-                    <Route path='/' element={<Navigate replace to="/ipo-entry" />} />
+                    <Route path='/' element={<Navigate replace to="/dashboard" />} />
                 </Routes>
             </BrowserRouter>
         </div>
