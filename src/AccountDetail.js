@@ -125,7 +125,7 @@ function AccountDetail() {
                                 type="number"
                                 className="form-control"
                                 placeholder='Hold Amount'
-                                value={holdDetail[row?.key]}
+                                value={holdDetail[row?.key] || 0}
                                 disabled
                             />
                         </div>
@@ -134,7 +134,7 @@ function AccountDetail() {
                                 type="number"
                                 className="form-control"
                                 placeholder='0'
-                                value={(row?.balance - holdDetail[row?.key])}
+                                value={(row?.balance - (holdDetail[row?.key] || 0))}
                                 disabled
                             />
                         </div>
