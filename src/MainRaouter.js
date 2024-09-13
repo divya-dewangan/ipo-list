@@ -8,6 +8,7 @@ import StockDetailList from './StockDetailList';
 import LoneList from './LoneList';
 import LoneForm from './LoneForm';
 import Dashboard from './Dashboard';
+import AccountDetail from './AccountDetail';
 
 function MainRaouter() {
 
@@ -28,6 +29,7 @@ function MainRaouter() {
                             <Route path='/lone-list' element={<LoneList />} />
                             <Route path='/lone-form' element={<LoneForm />} />
                             <Route path='/lone-form/:id' element={<LoneForm />} />
+                            <Route path='/account-detail' element={<AccountDetail />} />
                         </Routes>
                     } />
                     <Route path='/' element={<Navigate replace to="/dashboard" />} />
