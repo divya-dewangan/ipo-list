@@ -17,7 +17,7 @@ function DashboardPie({ allData }) {
                 return countByNameAndStatus(allData?.userName, event.target.value);
             } else if (event.target.value === "holdBalance") {
                 return countByNameAndStatus(allData.data, event.target.value)
-            } else if (event.target.value === "leftBalance")  {
+            } else if (event.target.value === "leftBalance") {
                 return countByNameAndStatus(allData, event.target.value)
             }
         }
@@ -42,8 +42,13 @@ function DashboardPie({ allData }) {
                 }
                 return acc;
             }, {});
+
+            // check all zero condition
+            const totalValue = Object.values(nameCounts).every(value => value === 0);
+            if (totalValue) {
+                nameCounts = initialValues
+            }
         } else {
-            console.log("Data:::", data)
             nameCounts = data?.reduce((acc, item) => {
                 if (type === 'totalBalance') {
                     acc[item?.key] = (acc[item?.key] || 0) + Number(item?.balance);
@@ -59,7 +64,6 @@ function DashboardPie({ allData }) {
             }, {});
         }
 
-        console.log("Final:::", nameCounts)
         // Convert the map to the desired output format
         const mainData = Object.keys(nameCounts)?.map(name => ({
             name: name,
