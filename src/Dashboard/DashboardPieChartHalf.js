@@ -45,7 +45,7 @@ function DashboardPieChartHalf({ allData }) {
 
 
   return (
-    <PieChart width={200} height={200}>
+    <PieChart width={200} height={300}>
       <Pie
         animationBegin={true}
         dataKey="value"
@@ -54,7 +54,7 @@ function DashboardPieChartHalf({ allData }) {
         data={graphData}
         cx="50%"
         cy="50%"
-        outerRadius={80}
+        outerRadius={100}
         label={renderCustomizedLabel}
       />
       <Tooltip />

@@ -51,18 +51,13 @@ function Dashboard() {
                         <MyLineChart allData={allData} status={2} title="Non-Allocated IPO" />
                     </Col>
                     <Col md={4} className='mt-4'>
-                        <Card>
-                            <Card.Header className='py-3' >Main Board Vs SME IPO </Card.Header>
-                            <Card.Body className="d-flex justify-content-center align-items-center">
-                                <DashboardPieChartHalf allData={allData} />
-                            </Card.Body>
-                        </Card>
+                        <DashboardPie allData={allData} />
                     </Col>
                     <Col md={4} className='mt-4'>
                         <Card>
-                            <Card.Header>User wise IPO Amount Hold</Card.Header>
+                            <Card.Header>Main Board Vs SME IPO </Card.Header>
                             <Card.Body className="d-flex justify-content-center align-items-center">
-                                <DashboardPie allData={allData} />
+                                <DashboardPieChartHalf allData={allData} />
                             </Card.Body>
                         </Card>
                     </Col>
@@ -76,7 +71,7 @@ function Dashboard() {
                     </Col>
                     <Col md={4} className='mt-4'>
                         <Card>
-                            <Card.Header>User wise IPO Hold Amount</Card.Header>
+                            <Card.Header>Hold Amount from the Start to Present</Card.Header>
                             <Card.Body className="d-flex justify-content-center align-items-center">
                                 <DashboardBar allData={allData} />
                             </Card.Body>

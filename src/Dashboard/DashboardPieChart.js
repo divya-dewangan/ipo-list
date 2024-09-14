@@ -63,7 +63,7 @@ function MyLineChart({ allData, status, type, title }) {
                 </Form.Select>
             </Card.Header>
             <Card.Body className="d-flex justify-content-center align-items-center">
-                <PieChart width={200} height={200}>
+                <PieChart width={200} height={260}>
                     <Pie
                         data={graphData}
                         cx="50%"

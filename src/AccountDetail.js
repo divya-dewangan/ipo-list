@@ -56,7 +56,7 @@ function AccountDetail() {
         Object.keys(values).map((item, index) => {
             const indexIs = allData?.userName?.findIndex(itemTwo => itemTwo?.key == item);
             const payload = allData?.userName[indexIs];
-            payload.balance = values[item]
+            payload.balance = values[item] || 0
             fetch(`https://ipo-list-1112-default-rtdb.firebaseio.com/ipo-list/userName/${indexIs}.json`, {
                 method: 'PATCH', // HTTP method
                 headers: {
