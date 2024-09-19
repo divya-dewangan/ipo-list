@@ -56,7 +56,7 @@ function MyLineChart({ allData, status, type, title }) {
     return (
         <Card>
             <Card.Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span>{title}</span>
+                <span className='text-truncate'>{title}</span>
                 <Form.Select aria-label="Select Type" style={{ width: '140px' }} value={selectedType} onChange={handleSelectChange}>
                     <option value="Main Board">Main Board</option>
                     <option value="SME">SME</option>

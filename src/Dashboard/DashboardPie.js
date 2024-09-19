@@ -98,7 +98,7 @@ function DashboardPie({ allData }) {
     return (
         <Card>
             <Card.Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span>User Balance Detail</span>
+                <span className='text-truncate'>User Balance Detail</span>
                 <Form.Select aria-label="Select Type" style={{ width: '160px' }} value={selectedType} onChange={handleSelectChange}>
                     <option value="totalBalance">Total Balance</option>
                     <option value="holdBalance">Hold Balance</option>

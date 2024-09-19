@@ -44,16 +44,16 @@ function Dashboard() {
             <Container className='my-4'>
 
                 <Row>
-                    <Col md={4} className='mt-4'>
+                    <Col sm={12} md={6} lg={4} className='mt-4'>
                         <MyLineChart allData={allData} status={1} title="Allocated IPO" />
                     </Col>
-                    <Col md={4} className='mt-4'>
+                    <Col sm={12} md={6} lg={4} className='mt-4'>
                         <MyLineChart allData={allData} status={2} title="Non-Allocated IPO" />
                     </Col>
-                    <Col md={4} className='mt-4'>
+                    <Col sm={12} md={6} lg={4} className='mt-4'>
                         <DashboardPie allData={allData} />
                     </Col>
-                    <Col md={4} className='mt-4'>
+                    <Col sm={12} md={6} lg={4} className='mt-4'>
                         <Card>
                             <Card.Header>Main Board Vs SME IPO </Card.Header>
                             <Card.Body className="d-flex justify-content-center align-items-center">
@@ -61,7 +61,7 @@ function Dashboard() {
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col md={8} className='mt-4'>
+                    <Col sm={12} md={12} lg={8} className='mt-4'>
                         <Card>
                             <Card.Header>Hold Amount from the Start to Present</Card.Header>
                             <Card.Body className="d-flex justify-content-center align-items-center">
@@ -69,13 +69,13 @@ function Dashboard() {
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col md={12} className='mt-4'>
-                                <DashboardLineChart allData={allData} />
+                    <Col sm={12} md={12} lg={12} className='mt-4'>
+                        <DashboardLineChart allData={allData} />
                     </Col>
 
 
 
-                    <Col md={12} className='mt-4'>
+                    <Col sm={12} md={12} lg={12} className='mt-4'>
                         <Card>
                             <Card.Header>Cut off Price Chart </Card.Header>
                             <Card.Body className="d-flex justify-content-center align-items-center">
@@ -84,12 +84,12 @@ function Dashboard() {
                         </Card>
                     </Col>
 
-                    <Col md={12} className='mt-4'>
+                    <Col sm={12} md={12} lg={12} className='mt-4'>
                         <DashboardBarUserChart allData={allData} />
                     </Col>
                 </Row>
             </Container>
-            
+
         </>
     )
 }
