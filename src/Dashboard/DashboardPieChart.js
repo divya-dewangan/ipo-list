@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Cell, Line, Pie, PieChart, Tooltip } from 'recharts';
+import { Cell, Line, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { getRandomColor, graphColors } from './Constant';
 import { Card, Form } from 'react-bootstrap';
 
@@ -16,7 +16,7 @@ function MyLineChart({ allData, status, type, title }) {
 
     function countByNameAndStatus(data, status, type) {
         // Filter items by the given status
-        const filtered = data?.filter(item => item?.status === status && item?.type === type );
+        const filtered = data?.filter(item => item?.status === status && item?.type === type);
 
         // Create a map to store counts of each name
         const nameCounts = filtered?.reduce((acc, item) => {
@@ -63,27 +63,29 @@ function MyLineChart({ allData, status, type, title }) {
                 </Form.Select>
             </Card.Header>
             <Card.Body className="d-flex justify-content-center align-items-center">
-                <PieChart width={200} height={260}>
-                    <Pie
-                        data={graphData}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        label={renderCustomizedLabel}
-                        outerRadius={100}
-                        innerRadius={50}
-                        dataKey="value"
-                        animationDuration={500} // Customize the animation duration (in ms)
-                        animationEasing="ease-in-out" // Customize easing  // ease //linear
-                        legendType='line'
-                    >
-                        <Line type="monotone" dataKey="SME" stroke="#82ca9d" />
-                        {graphData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={graphColors[index]} />
-                        ))}
-                    </Pie>
-                    <Tooltip />
-                </PieChart>
+                <ResponsiveContainer width={200} height={260}>
+                    <PieChart >
+                        <Pie
+                            data={graphData}
+                            cx="50%"
+                            cy="50%"
+                            labelLine={false}
+                            label={renderCustomizedLabel}
+                            outerRadius={100}
+                            innerRadius={50}
+                            dataKey="value"
+                            animationDuration={500} // Customize the animation duration (in ms)
+                            animationEasing="ease-in-out" // Customize easing  // ease //linear
+                            legendType='line'
+                        >
+                            <Line type="monotone" dataKey="SME" stroke="#82ca9d" />
+                            {graphData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={graphColors[index]} />
+                            ))}
+                        </Pie>
+                        <Tooltip />
+                    </PieChart>
+                </ResponsiveContainer>
             </Card.Body>
         </Card>
     );

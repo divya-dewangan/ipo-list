@@ -3,7 +3,6 @@ import { Card, Col, Container, Row } from 'react-bootstrap'
 import DashboardPieChartHalf from './Dashboard/DashboardPieChartHalf'
 import MyLineChart from './Dashboard/DashboardPieChart'
 import { toast } from 'react-toastify'
-import DashboardCountChart from './Dashboard/DashboardCountChart'
 import DashboardPie from './Dashboard/DashboardPie'
 import DashboardBar from './Dashboard/DashboardBar'
 import DashboardStacked from './Dashboard/DashboardStacked'
@@ -24,6 +23,7 @@ function Dashboard() {
         fetch("https://ipo-list-1112-default-rtdb.firebaseio.com/ipo-list.json")
             .then((data) => data.json())
             .then((res) => {
+                console.log("Account Backup::", res)
                 const allData = { ...res };
                 const checkNullArray = allData?.data?.filter(item => item !== null)
                 const modifyColor = checkNullArray?.map((item, index) => ({ ...item, color: graphColors[index] }));
@@ -63,27 +63,14 @@ function Dashboard() {
                     </Col>
                     <Col md={8} className='mt-4'>
                         <Card>
-                            <Card.Header>Month wise IPO Applied</Card.Header>
-                            <Card.Body className="d-flex justify-content-center align-items-center">
-                                <DashboardLineChart allData={allData} />
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    <Col md={4} className='mt-4'>
-                        <Card>
                             <Card.Header>Hold Amount from the Start to Present</Card.Header>
                             <Card.Body className="d-flex justify-content-center align-items-center">
                                 <DashboardBar allData={allData} />
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col md={8} className='mt-4'>
-                        <Card>
-                            <Card.Header>Month wise IPO Hold Amount</Card.Header>
-                            <Card.Body className="d-flex justify-content-center align-items-center">
-                                <DashboardCountChart allData={allData} />
-                            </Card.Body>
-                        </Card>
+                    <Col md={12} className='mt-4'>
+                                <DashboardLineChart allData={allData} />
                     </Col>
 
 
@@ -102,6 +89,7 @@ function Dashboard() {
                     </Col>
                 </Row>
             </Container>
+            
         </>
     )
 }

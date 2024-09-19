@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart, XAxis, YAxis, Tooltip } from 'recharts'
+import { Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import { getRandomColor, graphColors } from './Constant'
 
 function DashboardBar({ allData }) {
@@ -28,7 +28,8 @@ function DashboardBar({ allData }) {
     }, [allData])
 
     return (
-        <BarChart width={400} height={300} data={graphData}>
+        <ResponsiveContainer  height={300}>
+        <BarChart height={300} data={graphData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
@@ -36,6 +37,7 @@ function DashboardBar({ allData }) {
             <Legend dataKey="createdDate" />
             <Bar dataKey="value" fill="#82ca9d" />
         </BarChart>
+        </ResponsiveContainer>
     )
 }
 

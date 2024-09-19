@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Cell, Pie, PieChart, Tooltip } from 'recharts'
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import { getRandomColor, graphColors } from './Constant'
 import { Card, Form } from 'react-bootstrap'
 
@@ -33,20 +33,29 @@ function DashboardPie({ allData }) {
                 return acc;
             }, {});
 
-            nameCounts = data?.data?.reduce((acc, item) => {
+            const totalHoldAmt = data?.data?.reduce((acc, item) => {
                 if (!acc[item.name]) {
                     acc[item.name] = 0;
                 }
                 if (item.status === 0) {
-                    acc[item.name] = (initialValues[item?.name] || 0) - (Number(item?.holdamount) || 0);
+                    acc[item.name] += Number(item?.holdamount) || 0;
                 }
                 return acc;
             }, {});
 
+            // Use reduce to subtract the values
+            const result = Object.keys(initialValues).reduce((acc, key) => {
+                // If the key exists in both initialValues and totalHoldAmt, subtract the values
+                acc[key] = initialValues[key] - (totalHoldAmt[key] || 0);
+                return acc;
+            }, {});
+            
             // check all zero condition
-            const totalValue = Object.values(nameCounts).every(value => value === 0);
+            const totalValue = Object.values(result).every(value => value === 0);
             if (totalValue) {
                 nameCounts = initialValues
+            } else {
+                nameCounts = result
             }
         } else {
             nameCounts = data?.reduce((acc, item) => {
@@ -97,7 +106,8 @@ function DashboardPie({ allData }) {
                 </Form.Select>
             </Card.Header>
             <Card.Body className="d-flex justify-content-center align-items-center">
-                <PieChart width={400} height={260}>
+            <ResponsiveContainer  width={400} height={260}>
+                <PieChart>
                     <Pie
                         data={graphData}
                         dataKey="value"
@@ -115,6 +125,7 @@ function DashboardPie({ allData }) {
                     </Pie>
                     <Tooltip />
                 </PieChart>
+                </ResponsiveContainer>
             </Card.Body>
         </Card>
     )

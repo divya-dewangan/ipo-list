@@ -33,7 +33,7 @@ const DashboardBarUserChart = ({ allData }) => {
         const today = new Date();
         const months = [];
 
-        for (let i = 5; i >= 0; i--) {
+        for (let i = 3; i >= 0; i--) {
             const date = new Date(today.getFullYear(), today.getMonth() - i, 1); // Go back by 'i' months
             const month = date.toLocaleString('default', { month: 'short' });
             const year = date.getFullYear().toString().slice(-2); // Last two digits of the year
@@ -97,7 +97,7 @@ const DashboardBarUserChart = ({ allData }) => {
                 </Form.Select>
             </Card.Header>
             <Card.Body className="d-flex justify-content-center align-items-center">
-                <ResponsiveContainer width="100%" height={400}>
+                <ResponsiveContainer height={400}>
                     <BarChart data={graphData}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" />
