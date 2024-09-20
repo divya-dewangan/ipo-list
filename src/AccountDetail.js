@@ -9,9 +9,11 @@ function AccountDetail() {
     const [allData, setAllData] = useState({})
     const [holdDetail, setHoldDetail] = useState({})
     const [loading, setLoading] = useState(true);
+    const [totalDetails, setTotalDetails] = useState({})
 
 
     useEffect(() => {
+        console.log("UseEffect::")
         getInitialData();
     }, [])
 
@@ -40,7 +42,19 @@ function AccountDetail() {
                 }, {});
 
                 setHoldDetail(nameCounts);
-                setAllData(res)
+                setAllData(res);
+
+                // total balance logic
+                const totalBalance = res?.userName?.reduce((acc, item) => acc + item?.balance, 0);
+                const totalHoldBalance = Object.values(nameCounts)?.reduce((acc, item) => acc + item, 0);
+                const totalObj = {
+                    totalBalance,
+                    totalHoldBalance,
+                    totalLeftBalance: totalBalance - totalHoldBalance
+                }
+                setTotalDetails(totalObj)
+
+
                 setLoading(false)
             })
             .catch((error) => {
@@ -140,6 +154,42 @@ function AccountDetail() {
                         </div>
                     </div>
                 ))}
+
+
+                <div className="row mb-4">
+                    <div className="col-md-3 mb-1 d-flex align-items-center">
+                        <span className='h6'>Total</span>
+                    </div>
+                    <div className="col-md-3 mb-1">
+                        <Form.Control
+                            type="number"
+                            className="form-control h6"
+                            placeholder='Total Amount'
+                            value={totalDetails?.totalBalance || 0}
+                            disabled
+                        />
+                    </div>
+                    <div className="col-md-3 mb-1">
+                        <Form.Control
+                            type="number"
+                            className="form-control h6"
+                            placeholder='Hold Amount'
+                            value={totalDetails?.totalHoldBalance || 0}
+                            disabled
+                        />
+                    </div>
+                    <div className="col-md-3 mb-1">
+                        <Form.Control
+                            type="number"
+                            className="form-control h6"
+                            placeholder='Left Amount'
+                            value={totalDetails?.totalLeftBalance || 0}
+                            disabled
+                        />
+                    </div>
+                </div>
+
+
 
                 <div className="row font-weight-bold mb-3 mt-5">
                     <div className="col-md-3 offset-md-3 text-center">
